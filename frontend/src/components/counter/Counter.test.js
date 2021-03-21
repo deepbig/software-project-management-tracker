@@ -1,7 +1,7 @@
 import React from 'react';
-import App from './App';
+import Counter from './Counter';
 // setup file
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 
 
@@ -9,8 +9,8 @@ describe("Counter Testing", () => {
   
   let wrapper;
   beforeEach(() => {
-    wrapper = mount(<App />); 
-    // console.log(wrapper.debug());
+     //it will only render outer part, not the childrens by using shallow
+    wrapper = shallow(<Counter />); 
   })
 
   test('render the title of counter', () => {

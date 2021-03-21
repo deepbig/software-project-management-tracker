@@ -1,0 +1,97 @@
+.fullScreen {
+  background-color: #9f5d6d;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  .fullScreen {
+    background-color: #424242;
+  }
+}
+
+.dimScreen {
+  position: absolute;
+  max-width: 300px;
+  max-height: 45%;
+  top: 50%;
+  left: 50%;
+  overflow: visible;
+}
+
+.center {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  margin-top: -50%;
+  margin-left: -50%;
+
+
+  -moz-animation: blink normal 2s infinite ease-in-out;
+  /* Firefox */
+  -webkit-animation: blink normal 2s infinite ease-in-out;
+  /* Webkit */
+  -ms-animation: blink normal 2s infinite ease-in-out;
+  /* IE */
+  animation: blink normal 2s infinite ease-in-out;
+  /* Opera and prob css3 final iteration */
+}
+
+@-moz-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.33;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.33;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* IE */
+@-ms-keyframes blink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.33;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Opera and prob css3 final iteration */
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.33;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
