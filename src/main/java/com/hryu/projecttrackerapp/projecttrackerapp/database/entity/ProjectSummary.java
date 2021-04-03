@@ -10,7 +10,7 @@ public interface ProjectSummary {
 
   String getProjectManager();
 
-  int getTotalPersonHours();
+//  int getTotalPersonHours();
 
   Date getLastModified();
 

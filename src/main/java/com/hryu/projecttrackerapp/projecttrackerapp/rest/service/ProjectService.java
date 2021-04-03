@@ -40,9 +40,9 @@ public class ProjectService {
     this.modelMapper = modelMapper;
   }
 
-  public PageDto<ProjectSummary> list(int offset, int limit) throws ServerException {
+  public PageDto<SummaryProjectDto> list(int offset, int limit) throws ServerException {
 
-    PageDto ret = new PageDto();
+    PageDto<SummaryProjectDto> ret = new PageDto();
 
     List<ProjectSummary> summaries = projectRepository.findSummaryProjectList();
 

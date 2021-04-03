@@ -5,7 +5,7 @@ import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
-import RootReducers, { rootSaga } from './modules';
+import RootReducers from './modules';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 
@@ -19,7 +19,7 @@ const store = createStore(
   DevTool
 );
 
-sagaMiddleware.run(rootSaga);
+// sagaMiddleware.run(rootSaga);
 
 ReactDOM.render((
   <Provider store={store}>
