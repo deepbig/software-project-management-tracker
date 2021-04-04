@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Dialog,
@@ -14,10 +14,8 @@ import {
   Button,
   Box,
 } from '@material-ui/core';
-import { changeField, initializeForm } from '../../modules/project';
-import { UserList } from '../../lib/api/team';
-import UserAdd from '../user/UserAdd';
-import { CreateProject } from '../../lib/api/project';
+import { changeField, initializeForm } from '../../modules/risk';
+import { CreateRisk } from '../../lib/api/risk';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -30,13 +28,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProjectAdd = () => {
+const RiskAdd = ({ project_id }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const { addForm, userList } = useSelector(({ project, team }) => ({
-    addForm: project.addForm,
-    userList: team.userList,
+  const { addForm } = useSelector(({ risk }) => ({
+    addForm: risk.addForm,
   }))
 
   const handleClickOpen = (event) => {
@@ -49,12 +46,6 @@ const ProjectAdd = () => {
     dispatch(initializeForm('addForm'));
     document.activeElement.blur();
   }
-
-  useEffect(() => {
-    if (open === true) {
-      UserList(dispatch);
-    }
-  }, [dispatch, open]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -69,12 +60,8 @@ const ProjectAdd = () => {
 
   const handleSave = (e) => {
     e.preventDefault();
-
-    CreateProject(dispatch, addForm, handleClose);
+    CreateRisk(dispatch, addForm, project_id, handleClose);
   }
-
-
-
 
   return (
     <React.Fragment>
@@ -92,35 +79,30 @@ const ProjectAdd = () => {
           variant="h4"
           style={{ padding: 16 }}
         >
-          Craete New Project
+          Craete New Risk
         </Typography>
 
         <DialogContent>
-          <form name='project_add' onSubmit={handleSave} autoComplete="off">
+          <form name='risk_add' onSubmit={handleSave} autoComplete="off">
             <TextField autoFocus margin="dense" name="name" label="Name" type="text" value={addForm.name} onChange={handleChange} inputProps={{ maxLength: 32 }} required fullWidth />
-            <TextField margin="dense" name="description" label="Description" type="text" value={addForm.description} onChange={handleChange} inputProps={{ maxLength: 128 }} fullWidth />
 
               <Box display="flex" alignItems="center">
             <FormControl className={classes.formControl}>
-                <InputLabel id="demo-simple-select-label">Project Manager</InputLabel>
+                <InputLabel id="priority-select-label">Priority</InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="username"
-                  value={addForm.username}
+                  labelId="priority-select-label"
+                  id="priority-select"
+                  name="priority"
+                  value={addForm.priority}
                   onChange={handleChange}
                   required
                 >
-                  {userList.list !== undefined && userList.list !== null ?
-                    userList.list.map((list, index) => (
-                      <MenuItem key={index} value={list.name}>{list.name}</MenuItem>
-                    ))
-                    : <Typography key="no-option">No Option</Typography>
-                  }
+                  <MenuItem key={1} value="LOW">LOW</MenuItem>
+                  <MenuItem key={2} value="NORMAL">NORMAL</MenuItem>
+                  <MenuItem key={3} value="HIGH">HIGH</MenuItem>
                 </Select>
 
             </FormControl>
-                <UserAdd />
               </Box>
 
             <DialogActions style={{ paddingRight: 0 }}>
@@ -137,4 +119,4 @@ const ProjectAdd = () => {
   );
 };
 
-export default ProjectAdd;
+export default RiskAdd;

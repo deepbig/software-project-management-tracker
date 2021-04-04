@@ -149,6 +149,28 @@ public class TeamService {
   }
 
   @Transactional
+  public void deleteMember(long member_id) throws ServerException {
+
+    if (logger.isInfoEnabled()) {
+      logger.info("Delete selected member id [{}]", member_id);
+    }
+
+    if (memberRepository.existsById(member_id) == false) {
+      logger.error(
+          "The member id [{}] cannot be found.",
+          member_id);
+      ServerException se =
+          new ServerException(ErrorCode.FAIL_MEMBER_DELETE_BY_ID_NOT_FOUND);
+      throw se;
+    }
+    memberRepository.deleteById(member_id);
+
+    if (logger.isInfoEnabled()) {
+      logger.info("Success to delete an member[{}]", member_id);
+    }
+  }
+
+  @Transactional
   public void createUser(String name)
       throws ServerException {
 

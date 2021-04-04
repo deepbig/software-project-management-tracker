@@ -19,4 +19,6 @@ public interface RequirementRepository extends JpaRepository<Requirement, Long> 
   Boolean existsById(long id);
 
   Boolean existsByTitle(String title);
+
+  void deleteByProject(Project project);
 }

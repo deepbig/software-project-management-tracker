@@ -11,10 +11,10 @@ import {
   DialogTitle,
   Typography,
 } from '@material-ui/core';
-import { CreateUser } from '../../lib/api/team';
+import { CreateRole } from '../../lib/api/team';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 
-const UserAdd = () => {
+const RoleAdd = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
@@ -40,7 +40,7 @@ const UserAdd = () => {
 
   const handleSave = (event) => {
     if (value !== '' && value !== null) {
-      CreateUser(dispatch, value, handleClose);
+      CreateRole(dispatch, value, handleClose);
     } else {
       setError(true);
     }
@@ -53,20 +53,20 @@ const UserAdd = () => {
       </IconButton>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle disableTypography id="form-dialog-title">
-          <Typography variant="h3" align="center">New User</Typography>
+          <Typography variant="h3" align="center">New Role</Typography>
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Please type the User's full name you want to create.
+            Please type the role name you want to create.
           </DialogContentText>
           <TextField
             autoFocus
             error={error}
             required
-            helperText={error === true ? "User name cannot be empty." : null}
+            helperText={error === true ? "Role name cannot be empty." : null}
             margin="dense"
-            id="Username"
-            label="Username"
+            id="Rolename"
+            label="Rolename"
             value={value}
             onChange={handleChange}
             fullWidth
@@ -85,4 +85,4 @@ const UserAdd = () => {
   );
 };
 
-export default UserAdd;
+export default RoleAdd;

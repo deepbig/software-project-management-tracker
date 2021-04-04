@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from "react-router-dom";
 import {
   Box,
   Container,
@@ -17,12 +18,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DashboardPage = () => {
+  let { project_id } = useParams();
   const classes = useStyles();
-  
+
   return (
     <Page
       className={classes.root}
-      title="Dashboard"
+      title={`Dashboard`}
     >
       <Box
         display="flex"
@@ -30,9 +32,8 @@ const DashboardPage = () => {
         height="100%"
         justifyContent="center"
       >
-        {/* <Container maxWidth="lg"> */}
         <Container maxWidth={false}>
-          <DashboardForm />
+          <DashboardForm project_id={project_id} />
         </Container>
       </Box>
     </Page>

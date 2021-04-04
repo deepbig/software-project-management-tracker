@@ -28,6 +28,11 @@ const initialState = {
   userList: {},
   roleList: {},
   memberList: {},
+  addForm: {
+    username: "",
+    rolename: "",
+  },
+  selected: {},
 }
 
 const team = handleActions(

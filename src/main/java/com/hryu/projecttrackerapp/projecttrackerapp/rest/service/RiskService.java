@@ -95,4 +95,27 @@ public class RiskService {
     risk.setProject(project.get());
     riskRepository.save(risk);
   }
+
+  @Transactional
+  public void delete(long risk_id) throws ServerException {
+
+    if (logger.isInfoEnabled()) {
+      logger.info("Delete selected risk id [{}]", risk_id);
+    }
+
+    if (riskRepository.existsById(risk_id) == false) {
+      logger.error(
+          "The risk id [{}] cannot be found.",
+          risk_id);
+      ServerException se =
+          new ServerException(ErrorCode.FAIL_RISK_DELETE_BY_ID_NOT_FOUND);
+      throw se;
+    }
+    riskRepository.deleteById(risk_id);
+
+    if (logger.isInfoEnabled()) {
+      logger.info("Success to delete an risk [{}]", risk_id);
+    }
+  }
+
 }

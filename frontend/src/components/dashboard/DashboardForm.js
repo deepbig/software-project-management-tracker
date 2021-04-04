@@ -1,57 +1,59 @@
 import React, { useEffect } from 'react';
 import {
   Grid,
-  makeStyles,
+  Typography,
 } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
-// import { CategoryList } from '../../lib/api/category';
+import { useDispatch, useSelector } from 'react-redux';
+import { ProjectDetail } from '../../lib/api/project';
+import TeamTable from '../team/TeamTable';
+import RiskTable from '../risk/RiskTable';
+import RequirementTable from '../requirement/RequirementTable';
+import TotalHour from '../totalHours/TotalHour';
+import { initializeState as initializeStateProject } from '../../modules/project';
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: theme.spacing(2),
-  },
-}));
-
-const DashboardForm = () => {
-  const classes = useStyles();
+const DashboardForm = ({ project_id }) => {
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   CategoryList(dispatch);
-  // }, [dispatch]);
+  const { projectDetail } = useSelector(({ project }) => ({
+    projectDetail: project.projectDetail,
+  }))
+
+  useEffect(() => {
+    ProjectDetail(dispatch, project_id);
+
+    dispatch(initializeStateProject());
+  }, [dispatch, project_id]);
 
   return (
-    <Grid container spacing={3}>
-      {/* <Grid item xl={6} lg={6} sm={6} xs={12}>
-        <RecentActivity />
+    <Grid container justify="center" spacing={2}>
+      <Grid item xs={12}>
+        <Typography
+          align="left"
+          color="textPrimary"
+          variant="h4">
+          {projectDetail.name}
+        </Typography>
       </Grid>
-      <Grid item xl={6} lg={6} sm={6} xs={12}>
-        <RecentResult />
+      <Grid item xs={12}>
+        <Typography
+          align="left"
+          color="textPrimary"
+          variant="subtitle1">
+          {projectDetail.description}
+        </Typography>
       </Grid>
-      <Grid item xl={3} lg={3} sm={3} xs={12}>
-        <BestPosting type="Activity" count="Hours" />
+      <Grid item lg={4} sm={6} xs={12}>
+        <TeamTable project_id={project_id} />
       </Grid>
-      <Grid item xl={3} lg={3} sm={3} xs={12}>
-        <BestPosting type="Activity" count="Counts" />
+      <Grid item lg={4} sm={6} xs={12}>
+        <RiskTable project_id={project_id} />
       </Grid>
-      <Grid item xl={3} lg={3} sm={3} xs={12}>
-        <BestPosting type="Result" count="Hours" />
+      <Grid item lg={4} sm={6} xs={12}>
+        <TotalHour project_id={project_id} />
       </Grid>
-      <Grid item xl={3} lg={3} sm={3} xs={12}>
-        <BestPosting type="Result" count="Counts" />
+      <Grid item xs={12}>
+        <RequirementTable project_id={project_id} />
       </Grid>
-      <Grid item md={6} sm={12}>
-        <WeeklyTrend type="Activity" count="Counts" />
-      </Grid>
-      <Grid item md={6} sm={12}>
-        <WeeklyTrend type="Activity" count="Hours" />
-      </Grid>
-      <Grid item md={6} sm={12}>
-        <WeeklyTrend type="Result" count="Counts" />
-      </Grid>
-      <Grid item md={6} sm={12}>
-        <WeeklyTrend type="Result" count="Hours" />
-      </Grid> */}
     </Grid>
   );
 };

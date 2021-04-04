@@ -8,6 +8,8 @@ public interface ProjectSummary {
 
   String getName();
 
+  String getDescription();
+
   String getProjectManager();
 
 //  int getTotalPersonHours();

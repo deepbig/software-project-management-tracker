@@ -55,4 +55,17 @@ public class RiskController {
     }
   }
 
+  @RequestMapping(value = "/risk/delete/{risk_id}", method = RequestMethod.POST)
+  @ResponseStatus(value = HttpStatus.OK)
+  public CommonResult delete(
+      @PathVariable("risk_id") long risk_id)
+      throws ServerException {
+    try {
+      riskService.delete(risk_id);
+      return CommonResult.SUCCESS_RESPONSE;
+    } catch (ServerException e) {
+      throw e;
+    }
+  }
+
 }

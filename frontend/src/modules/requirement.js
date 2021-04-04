@@ -25,6 +25,23 @@ export const initializeForm = createAction(INITIALIZE_FORM, form => form);
 export const initializeState = createAction(INITIALIZE_STATE);
 
 const initialState = {
+  requirementList: {},
+  totalPersonHoursList: {},
+  hoursList: {},
+  addForm: {
+    title: "",
+    description: "",
+    requirement_type: "",
+  },
+  selected: {},
+  updateForm: {
+    hour_total: 0,
+    hour_analysis: 0,
+    hour_designing: 0,
+    hour_coding: 0,
+    hour_testing: 0,
+    hour_proj_mgt: 0,
+  }
 }
 
 const requirement = handleActions(

@@ -24,7 +24,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 //          + "INNER JOIN USERS u ON p.USER_ID=u.USER_ID "
 //          + "LEFT JOIN TOTAL_PERSON_HOURS t ON p.TOTAL_PERSON_HOURS_ID=t.TOTAL_PERSON_HOURS_ID", nativeQuery = true)
 @Query(value =
-    "SELECT p.PROJECT_ID as Id, p.PROJECT_NAME as Name, u.USER_NAME as ProjectManager, p.LAST_MODIFIED as LastModified "
+    "SELECT p.PROJECT_ID as Id, p.PROJECT_NAME as Name, p.PROJECT_DESCRIPTION as Description,  u.USER_NAME as ProjectManager, p.LAST_MODIFIED as LastModified "
         + "FROM PROJECTS p "
         + "INNER JOIN USERS u ON p.USER_ID=u.USER_ID", nativeQuery = true)
   List<ProjectSummary> findSummaryProjectList();

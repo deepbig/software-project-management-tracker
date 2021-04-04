@@ -56,6 +56,19 @@ public class RequirementController {
     }
   }
 
+  @RequestMapping(value = "/requirement/delete/{requirement_id}", method = RequestMethod.POST)
+  @ResponseStatus(value = HttpStatus.OK)
+  public CommonResult delete(
+      @PathVariable("requirement_id") long requirement_id)
+      throws ServerException {
+    try {
+      requirementService.delete(requirement_id);
+      return CommonResult.SUCCESS_RESPONSE;
+    } catch (ServerException e) {
+      throw e;
+    }
+  }
+
   @RequestMapping(value = "/requirement/hours/{project_id}", method = RequestMethod.POST)
   @ResponseStatus(value = HttpStatus.OK)
   public CommonResult updateHours(
@@ -70,7 +83,7 @@ public class RequirementController {
     }
   }
 
-  @RequestMapping(value = "/requirement/total_person_hour/{project_id}", method = RequestMethod.GET)
+  @RequestMapping(value = "/requirement/total_person_hours/{project_id}", method = RequestMethod.GET)
   @ResponseStatus(value = HttpStatus.OK)
   public SingleResult getListTotalPersonHour(
       @PathVariable("project_id") long project_id)

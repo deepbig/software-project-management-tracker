@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Dialog,
@@ -7,6 +7,7 @@ import {
   Typography,
   TextField,
   makeStyles,
+
   FormControl,
   InputLabel,
   Select,
@@ -14,10 +15,8 @@ import {
   Button,
   Box,
 } from '@material-ui/core';
-import { changeField, initializeForm } from '../../modules/project';
-import { UserList } from '../../lib/api/team';
-import UserAdd from '../user/UserAdd';
-import { CreateProject } from '../../lib/api/project';
+import { changeField, initializeForm } from '../../modules/requirement';
+import { CreateRequirement } from '../../lib/api/requirement';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -30,13 +29,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProjectAdd = () => {
+const RequirementAdd = ({ project_id }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const { addForm, userList } = useSelector(({ project, team }) => ({
-    addForm: project.addForm,
-    userList: team.userList,
+  const { addForm } = useSelector(({ requirement }) => ({
+    addForm: requirement.addForm,
   }))
 
   const handleClickOpen = (event) => {
@@ -49,12 +47,6 @@ const ProjectAdd = () => {
     dispatch(initializeForm('addForm'));
     document.activeElement.blur();
   }
-
-  useEffect(() => {
-    if (open === true) {
-      UserList(dispatch);
-    }
-  }, [dispatch, open]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -69,12 +61,8 @@ const ProjectAdd = () => {
 
   const handleSave = (e) => {
     e.preventDefault();
-
-    CreateProject(dispatch, addForm, handleClose);
+    CreateRequirement(dispatch, addForm, project_id, handleClose);
   }
-
-
-
 
   return (
     <React.Fragment>
@@ -92,36 +80,31 @@ const ProjectAdd = () => {
           variant="h4"
           style={{ padding: 16 }}
         >
-          Craete New Project
+          Craete New Requirement
         </Typography>
 
         <DialogContent>
-          <form name='project_add' onSubmit={handleSave} autoComplete="off">
-            <TextField autoFocus margin="dense" name="name" label="Name" type="text" value={addForm.name} onChange={handleChange} inputProps={{ maxLength: 32 }} required fullWidth />
+          <form name='requirement_add' onSubmit={handleSave} autoComplete="off">
+            <TextField autoFocus margin="dense" name="title" label="Title" type="text" value={addForm.title} onChange={handleChange} inputProps={{ maxLength: 32 }} required fullWidth />
             <TextField margin="dense" name="description" label="Description" type="text" value={addForm.description} onChange={handleChange} inputProps={{ maxLength: 128 }} fullWidth />
 
-              <Box display="flex" alignItems="center">
-            <FormControl className={classes.formControl}>
-                <InputLabel id="demo-simple-select-label">Project Manager</InputLabel>
+            <Box display="flex" alignItems="center">
+              <FormControl className={classes.formControl}>
+                <InputLabel id="requirement-type-select-label">Requirement Type</InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="username"
-                  value={addForm.username}
+                  labelId="requirement-type-select-label"
+                  id="requirement-type-select"
+                  name="requirement_type"
+                  value={addForm.requirement_type}
                   onChange={handleChange}
                   required
                 >
-                  {userList.list !== undefined && userList.list !== null ?
-                    userList.list.map((list, index) => (
-                      <MenuItem key={index} value={list.name}>{list.name}</MenuItem>
-                    ))
-                    : <Typography key="no-option">No Option</Typography>
-                  }
+                  <MenuItem key={1} value="FUNCTIONAL">FUNCTIONAL</MenuItem>
+                  <MenuItem key={2} value="NON_FUNCTIONAL">NON_FUNCTIONAL</MenuItem>
                 </Select>
 
-            </FormControl>
-                <UserAdd />
-              </Box>
+              </FormControl>
+            </Box>
 
             <DialogActions style={{ paddingRight: 0 }}>
               <Button type="submit" onClick={handleSave} variant="contained" color="primary" >
@@ -132,9 +115,15 @@ const ProjectAdd = () => {
           </form>
         </DialogContent>
       </Dialog>
+      {/* {
+        backdrop === true ?
+          <Backdrop className={classes.backdrop} open={backdrop}>
+            <CircularProgress color="inherit" />
+          </Backdrop> : null
+      } */}
 
     </React.Fragment>
   );
 };
 
-export default ProjectAdd;
+export default RequirementAdd;

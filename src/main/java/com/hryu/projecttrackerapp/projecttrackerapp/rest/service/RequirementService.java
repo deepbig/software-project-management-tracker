@@ -105,6 +105,71 @@ public class RequirementService {
     requirement.setHourProjMgt(0);
     requirement.setProject(project.get());
     requirementRepository.save(requirement);
+
+    List<TotalPersonHour> totalPersonHours = totalPersonHourRepository.findByProject(project.get());
+
+    if (totalPersonHours.size() > 1) {
+      logger.error(
+          "There are duplicated total person hour in a project [{}]", project.get());
+      ServerException se =
+          new ServerException(ErrorCode.FAIL_TOTAL_PERSON_HOUR_UPDATE_BY_DUPLICATE_ROW);
+      throw se;
+    } else if (totalPersonHours.isEmpty()) {
+      TotalPersonHour totalPersonHour = new TotalPersonHour();
+      totalPersonHour.setTotal(requirement.getHourTotal());
+      totalPersonHour.setAnalysis(requirement.getHourAnalysis());
+      totalPersonHour.setDesigning(requirement.getHourDesigning());
+      totalPersonHour.setCoding(requirement.getHourCoding());
+      totalPersonHour.setTesting(requirement.getHourTesting());
+      totalPersonHour.setProjMgt(requirement.getHourProjMgt());
+      totalPersonHour.setProject(project.get());
+      totalPersonHourRepository.save(totalPersonHour);
+    }
+  }
+
+  @Transactional
+  public void delete(long requirement_id) throws ServerException {
+
+    if (logger.isInfoEnabled()) {
+      logger.info("Delete selected risk id [{}]", requirement_id);
+    }
+
+    Optional<Requirement> requirement = requirementRepository.findById(requirement_id);
+    if (!requirement.isPresent()) {
+      logger.error(
+          "The requirement id [{}] cannot be found.",
+          requirement_id);
+      ServerException se =
+          new ServerException(ErrorCode.FAIL_REQUIREMENT_DELETE_BY_ID_NOT_FOUND);
+      throw se;
+    }
+
+    List<TotalPersonHour> totalPersonHours = totalPersonHourRepository
+        .findByProject(requirement.get().getProject());
+    if (totalPersonHours.isEmpty() || totalPersonHours.size() > 1) {
+      logger.error(
+          "There are duplicated total person hour in the project [{}]",
+          requirement.get().getProject());
+      ServerException se =
+          new ServerException(ErrorCode.FAIL_TOTAL_PERSON_HOUR_UPDATE_BY_DUPLICATE_ROW);
+      throw se;
+    }
+
+    for (TotalPersonHour totalPersonHour : totalPersonHours) {
+      totalPersonHour.setTotal(totalPersonHour.getTotal() - requirement.get().getHourTotal());
+      totalPersonHour.setAnalysis(totalPersonHour.getAnalysis() - requirement.get().getHourAnalysis());
+      totalPersonHour.setDesigning(totalPersonHour.getDesigning() - requirement.get().getHourDesigning());
+      totalPersonHour.setCoding(totalPersonHour.getCoding() - requirement.get().getHourCoding());
+      totalPersonHour.setTesting(totalPersonHour.getTesting() - requirement.get().getHourTesting());
+      totalPersonHour.setProjMgt(totalPersonHour.getProjMgt() - requirement.get().getHourProjMgt());
+      totalPersonHourRepository.save(totalPersonHour);
+    }
+
+    requirementRepository.deleteById(requirement_id);
+
+    if (logger.isInfoEnabled()) {
+      logger.info("Success to delete an requirement [{}]", requirement_id);
+    }
   }
 
   @Transactional
@@ -159,7 +224,7 @@ public class RequirementService {
       logger.error(
           "There are duplicated total person hour in a project [{}]", project.get());
       ServerException se =
-          new ServerException(ErrorCode.FAIL_TOTAL_PERSON_HOUR_UPDATE_BY_DUPLIATE_ROW);
+          new ServerException(ErrorCode.FAIL_TOTAL_PERSON_HOUR_UPDATE_BY_DUPLICATE_ROW);
       throw se;
     } else if (totalPersonHours.isEmpty()) {
       TotalPersonHour totalPersonHour = modelMapper.from(dto);
@@ -196,7 +261,7 @@ public class RequirementService {
       logger.error(
           "There are duplicated total person hour in a project [{}]", project.get());
       ServerException se =
-          new ServerException(ErrorCode.FAIL_TOTAL_PERSON_HOUR_UPDATE_BY_DUPLIATE_ROW);
+          new ServerException(ErrorCode.FAIL_TOTAL_PERSON_HOUR_UPDATE_BY_DUPLICATE_ROW);
       throw se;
     }
 

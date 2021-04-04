@@ -2,6 +2,7 @@ package com.hryu.projecttrackerapp.projecttrackerapp.rest.mapper;
 
 import com.hryu.projecttrackerapp.projecttrackerapp.database.entity.Member;
 import com.hryu.projecttrackerapp.projecttrackerapp.database.entity.Project;
+import com.hryu.projecttrackerapp.projecttrackerapp.database.entity.ProjectSummary;
 import com.hryu.projecttrackerapp.projecttrackerapp.database.entity.Requirement;
 import com.hryu.projecttrackerapp.projecttrackerapp.database.entity.Risk;
 import com.hryu.projecttrackerapp.projecttrackerapp.database.entity.TotalPersonHour;
@@ -10,6 +11,7 @@ import com.hryu.projecttrackerapp.projecttrackerapp.rest.dto.MemberDto;
 import com.hryu.projecttrackerapp.projecttrackerapp.rest.dto.NewProjectDto;
 import com.hryu.projecttrackerapp.projecttrackerapp.rest.dto.RequirementDto;
 import com.hryu.projecttrackerapp.projecttrackerapp.rest.dto.RiskDto;
+import com.hryu.projecttrackerapp.projecttrackerapp.rest.dto.SummaryProjectDto;
 import com.hryu.projecttrackerapp.projecttrackerapp.rest.dto.TotalPersonHourDto;
 import lombok.NonNull;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -36,6 +38,10 @@ public class ModelMapper {
 
   public Project from(@NonNull NewProjectDto src) {
     return secondaryMapper.map(src, Project.class);
+  }
+
+  public SummaryProjectDto from(@NonNull Project src) {
+    return secondaryMapper.map(src, SummaryProjectDto.class);
   }
 
   public MemberDto from(@NonNull Member src) {

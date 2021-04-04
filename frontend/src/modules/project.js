@@ -26,11 +26,14 @@ export const initializeState = createAction(INITIALIZE_STATE);
 
 const initialState = {
   projectList: {},
+  projectDetail: {},
   addForm: {
     name: "",
     description: "",
     username: "",
-  }
+  },
+  selected: {},
+
 }
 
 const project = handleActions(

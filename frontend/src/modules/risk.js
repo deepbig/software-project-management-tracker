@@ -25,6 +25,12 @@ export const initializeForm = createAction(INITIALIZE_FORM, form => form);
 export const initializeState = createAction(INITIALIZE_STATE);
 
 const initialState = {
+  riskList: {},
+  addForm: {
+    name: "",
+    priority: "",
+  },
+  selected: {},
 }
 
 const risk = handleActions(

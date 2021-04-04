@@ -5,7 +5,6 @@ import {
   DialogContent,
   DialogActions,
   Typography,
-  TextField,
   makeStyles,
   FormControl,
   InputLabel,
@@ -14,10 +13,11 @@ import {
   Button,
   Box,
 } from '@material-ui/core';
-import { changeField, initializeForm } from '../../modules/project';
-import { UserList } from '../../lib/api/team';
+import { changeField, initializeForm } from '../../modules/team';
+import { UserList, RoleList } from '../../lib/api/team';
 import UserAdd from '../user/UserAdd';
-import { CreateProject } from '../../lib/api/project';
+import RoleAdd from '../role/RoleAdd';
+import { CreateMember } from '../../lib/api/team';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -30,13 +30,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProjectAdd = () => {
+const TeamAdd = ({ project_id }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const { addForm, userList } = useSelector(({ project, team }) => ({
-    addForm: project.addForm,
+  const { addForm, userList, roleList } = useSelector(({ team }) => ({
+    addForm: team.addForm,
     userList: team.userList,
+    roleList: team.roleList,
   }))
 
   const handleClickOpen = (event) => {
@@ -53,6 +54,7 @@ const ProjectAdd = () => {
   useEffect(() => {
     if (open === true) {
       UserList(dispatch);
+      RoleList(dispatch);
     }
   }, [dispatch, open]);
 
@@ -70,11 +72,8 @@ const ProjectAdd = () => {
   const handleSave = (e) => {
     e.preventDefault();
 
-    CreateProject(dispatch, addForm, handleClose);
+    CreateMember(dispatch, addForm, project_id, handleClose);
   }
-
-
-
 
   return (
     <React.Fragment>
@@ -92,20 +91,18 @@ const ProjectAdd = () => {
           variant="h4"
           style={{ padding: 16 }}
         >
-          Craete New Project
+          Craete New Member
         </Typography>
 
         <DialogContent>
-          <form name='project_add' onSubmit={handleSave} autoComplete="off">
-            <TextField autoFocus margin="dense" name="name" label="Name" type="text" value={addForm.name} onChange={handleChange} inputProps={{ maxLength: 32 }} required fullWidth />
-            <TextField margin="dense" name="description" label="Description" type="text" value={addForm.description} onChange={handleChange} inputProps={{ maxLength: 128 }} fullWidth />
+          <form name='team_add' onSubmit={handleSave} autoComplete="off">
 
-              <Box display="flex" alignItems="center">
-            <FormControl className={classes.formControl}>
-                <InputLabel id="demo-simple-select-label">Project Manager</InputLabel>
+            <Box display="flex" alignItems="center">
+              <FormControl className={classes.formControl}>
+                <InputLabel id="username-select-label">Username</InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
+                  labelId="username-select-label"
+                  id="username-select"
                   name="username"
                   value={addForm.username}
                   onChange={handleChange}
@@ -119,9 +116,31 @@ const ProjectAdd = () => {
                   }
                 </Select>
 
-            </FormControl>
-                <UserAdd />
-              </Box>
+              </FormControl>
+              <UserAdd />
+            </Box>
+            <Box display="flex" alignItems="center">
+              <FormControl className={classes.formControl}>
+                <InputLabel id="rolename-select-label">Role</InputLabel>
+                <Select
+                  labelId="rolename-select-label"
+                  id="rolename-select"
+                  name="rolename"
+                  value={addForm.rolename}
+                  onChange={handleChange}
+                  required
+                >
+                  {roleList.list !== undefined && roleList.list !== null ?
+                    roleList.list.map((list, index) => (
+                      <MenuItem key={index} value={list.name}>{list.name}</MenuItem>
+                    ))
+                    : <Typography key="no-option">No Option</Typography>
+                  }
+                </Select>
+
+              </FormControl>
+              <RoleAdd />
+            </Box>
 
             <DialogActions style={{ paddingRight: 0 }}>
               <Button type="submit" onClick={handleSave} variant="contained" color="primary" >
@@ -137,4 +156,4 @@ const ProjectAdd = () => {
   );
 };
 
-export default ProjectAdd;
+export default TeamAdd;

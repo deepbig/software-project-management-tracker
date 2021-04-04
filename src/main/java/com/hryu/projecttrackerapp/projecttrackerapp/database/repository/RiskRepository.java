@@ -19,4 +19,6 @@ public interface RiskRepository extends JpaRepository<Risk, Long> {
   Boolean existsById(long id);
 
   Boolean existsByName(String name);
+
+  void deleteByProject(Project project);
 }

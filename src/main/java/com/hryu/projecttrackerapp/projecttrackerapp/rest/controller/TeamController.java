@@ -32,7 +32,7 @@ public class TeamController {
     this.teamService = teamService;
   }
 
-  @RequestMapping(value = "/team/{project_id}", method = RequestMethod.GET)
+  @RequestMapping(value = "/member/{project_id}", method = RequestMethod.GET)
   @ResponseStatus(value = HttpStatus.OK)
   public SingleResult<PageDto> getList(HttpServletRequest request,
       @PathVariable("project_id") long project_id,
@@ -49,6 +49,20 @@ public class TeamController {
       throws ServerException {
     try {
       teamService.createMember(project_id, dto);
+      return CommonResult.SUCCESS_RESPONSE;
+    } catch (ServerException e) {
+      throw e;
+    }
+  }
+
+
+  @RequestMapping(value = "/member/delete/{member_id}", method = RequestMethod.POST)
+  @ResponseStatus(value = HttpStatus.OK)
+  public CommonResult deleteMember(
+      @PathVariable("member_id") long member_id)
+      throws ServerException {
+    try {
+      teamService.deleteMember(member_id);
       return CommonResult.SUCCESS_RESPONSE;
     } catch (ServerException e) {
       throw e;

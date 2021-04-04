@@ -1,7 +1,6 @@
 package com.hryu.projecttrackerapp.projecttrackerapp.database.repository;
 
 import com.hryu.projecttrackerapp.projecttrackerapp.database.entity.Project;
-import com.hryu.projecttrackerapp.projecttrackerapp.database.entity.Requirement;
 import com.hryu.projecttrackerapp.projecttrackerapp.database.entity.TotalPersonHour;
 import java.util.List;
 import java.util.Optional;
@@ -16,5 +15,7 @@ public interface TotalPersonHourRepository extends JpaRepository<TotalPersonHour
   List<TotalPersonHour> findByProject(Project project);
 
   Boolean existsById(long id);
+
+  void deleteByProject(Project project);
 
 }
