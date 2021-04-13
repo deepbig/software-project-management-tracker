@@ -19,10 +19,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "PROJECTS",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "PROJECT_NAME")
-})
+@Table(name = "PROJECTS")
 @NoArgsConstructor
 @Data
 public class Project {
