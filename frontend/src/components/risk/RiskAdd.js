@@ -79,7 +79,7 @@ const RiskAdd = ({ project_id }) => {
           variant="h4"
           style={{ padding: 16 }}
         >
-          Craete New Risk
+          Create New Risk
         </Typography>
 
         <DialogContent>

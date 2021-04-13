@@ -80,7 +80,7 @@ const RequirementAdd = ({ project_id }) => {
           variant="h4"
           style={{ padding: 16 }}
         >
-          Craete New Requirement
+          Create New Requirement
         </Typography>
 
         <DialogContent>

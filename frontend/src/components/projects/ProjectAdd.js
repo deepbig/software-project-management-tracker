@@ -92,7 +92,7 @@ const ProjectAdd = () => {
           variant="h4"
           style={{ padding: 16 }}
         >
-          Craete New Project
+          Create New Project
         </Typography>
 
         <DialogContent>
